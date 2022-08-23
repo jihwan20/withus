@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.bjh.withus.mapper.MemberMapper;
 import com.bjh.withus.service.MemberService;
 import com.bjh.withus.vo.Member;
 
@@ -15,11 +16,13 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 	
+	// 로그인 이동
 	@GetMapping("/login")
 	public String login() {
 		return "login";
 	}
 	
+	// 로그인 액션
 	@PostMapping("/login")
 	public String login(HttpSession session, Member member) {
 		Member loginMember = memberService.getSelectOne(member);
@@ -31,9 +34,26 @@ public class MemberController {
 		session.setAttribute("loginMember", loginMember);
 		return "redirect:/main";
 	}
+	
+	//로그아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/main";
+	}
+	
+	//회원가입 이동
+	@GetMapping("/addMember")
+	public String addMember() {
+		return "addMember";
+	}
+	
+	// 회원가입 액션
+	@PostMapping("/addMember")
+	public String addMember(Member member) {
+		System.out.println(member);
+		memberService.getaddMember(member);
+		//회원가입 성공시 로그인창으로 이동
+		return "redirect:/login";
 	}
 }

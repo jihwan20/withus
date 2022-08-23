@@ -14,7 +14,20 @@ public class MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
+	// 로그인
 	public Member getSelectOne(Member member) {
 		return memberMapper.selectMemberOne(member);
+	}
+	
+	// 회원가입
+	public void getaddMember(Member member) {
+		String Id = member.getId();
+		String Pw = member.getPw();
+		
+		member.setId(Id);
+		member.setPw(Pw);
+		
+		memberMapper.insertMember(member);
+		
 	}
 }
