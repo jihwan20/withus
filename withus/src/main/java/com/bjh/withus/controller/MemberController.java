@@ -16,12 +16,6 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 	
-	// 로그인 이동
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
-	
 	// 로그인 액션
 	@PostMapping("/login")
 	public String login(HttpSession session, Member member) {
