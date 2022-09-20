@@ -6,10 +6,19 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.bjh.withus.vo.Photo;
+import com.bjh.withus.vo.PhotoFile;
 
 @Mapper
 public interface PhotoMapper {
-	List<Photo> selectPhotoList(Map<String, Object> map);
+	// 앨범 전체 목록
+	List<Map<String, Object>> selectPhotoList(Map<String, Object> map);
 	
+	// 앨범 전체 갯수(페이징)
 	int selectPhotoTotalCount();
+	
+	// 앨범 추가
+	void insertPhoto(Photo photo);
+	
+	// 앨범 이미지 업로드
+	void insertPhotoFile(PhotoFile photoFile);
 }

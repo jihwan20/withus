@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bjh.withus.mapper.PhotoMapper">
-<select id="selectPhotoList" parameterType="Map" resultType="com.bjh.withus.vo.Photo">
+
+<resultMap type="com.bjh.withus.vo.Photo" id="photoMap">
+	<id column="photo_no" property="photoNo"/>
+	<result column="photo_name" property="photoName"/>
+	<result column="create_date" property="createDate"/>
+	<result column="update_date" property="updateDate"/>
+	<association property="photoFile" javaType="com.bjh.withus.vo.PhotoFile">
+		<id column="photofile_no" property="photoFileNo"/>
+		<result column="photofile_name" property="photoFileName"/>
+		<result column="photofile_type" property="photoFileType"/>
+		<result column="photofile_size" property="photoFileSize"/>
+	</association>
+</resultMap>
+
+<!-- 사진전체 목록 -->
+<select id="selectPhotoList" parameterType="Map" resultMap="photoMap">
 	SELECT 
-		photo_no photoNo,
-		photo_name photoName,
-		photo_img photoImg,
-		create_date creatDate,
-		update_date updateDate
-	 FROM photo ORDER BY create_date DESC
+		p.photo_no,
+		p.photo_name,
+		pf.photofile_name,
+		pf.photofile_type
+	 FROM 
+	 	photo AS p INNER JOIN photofile AS pf
+	 ON p.photo_no = pf.photo_no
+	 ORDER BY create_date DESC
 	 LIMIT #{beginRow}, #{ROW_PER_PAGE}
 </select>
+<!-- 사진 전체 갯수(페이징) -->
 <select id="selectPhotoTotalCount" resultType="int">
 	SELECT COUNT(*)
-	FROM photo
+	FROM 
+		photo AS p INNER JOIN photofile AS pf
+	ON p.photo_no = pf.photo_no
 </select>
+
+<!-- 사진 추가 -->
+<insert id="insertPhoto" parameterType="com.bjh.withus.vo.Photo">
+	<selectKey resultType="int" keyProperty="photoNo" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+	INSERT INTO photo(
+		photo_name,
+		create_date,
+		update_date
+	) VALUES (
+		#{photoName},
+		NOW(),
+		NOW()
+	)
+</insert>
+<!-- 사진이미지 업로드 -->
+<insert id="insertPhotoFile">
+	INSERT INTO photofile(
+		photo_no,
+		photofile_name,
+		photofile_type,
+		photofile_size
+	) VALUES (
+		#{photoNo},
+		#{photoFileName},
+		#{photoFileType},
+		#{photoFileSize}
+	)
+</insert>
 </mapper>
