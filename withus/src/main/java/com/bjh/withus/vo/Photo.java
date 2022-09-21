@@ -13,6 +13,6 @@ public class Photo {
 	private String createDate;
 	private String updateDate;
 	private List<MultipartFile> photoFileUpload;
-	private List<PhotoFile> pfList;
-	private PhotoFile photoFile;
+	private List<PhotoFile> photoFile;
+	private PhotoFile pf;
 }

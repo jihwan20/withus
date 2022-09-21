@@ -4,22 +4,25 @@
 <html>
 <head>
 <style type="text/css">
-	table{
+	td{
 		margin: auto;
 		text-align: center;
+	}
+	img{
+		border: none;
 	}
 </style>
 <meta charset="UTF-8">
 <title>withus</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/521b75b25a.js" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-	<div class="container-fluid">
+	<div class=".container-fluid">
 	<!-- modal -->
-	<div class="modal" id="myModal">
+	<div class="modal" id="addPhoto">
 		<div class="modal-dialog modal-xl">
 			<form method="post" action="/addphoto" enctype="multipart/form-data">
 				<div class="modal-content">
@@ -33,7 +36,11 @@
 				<!-- Modal body -->
 					<div class="modal-body">
 						사진 이름 : <input type="text" name="photoName">
-						이미지 : <input type="file" multiple="multiple" name="photoFileUpload" required="required">
+						이미지 : <input type="file" multiple="multiple" name="photoFileUpload" required="required" onchange="readURL(this)">
+						<hr>
+						<div style="text-align: center;" >
+							<img id="preview" width="500" height="400"/>
+						</div>
 					</div>
 				
 				<!-- Modal footer -->
@@ -41,7 +48,6 @@
 					<button id="upload" type="submit" class="btn btn-outline-primary">Upload</button>
 					<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
 				</div>
-				
 				</div>
 			</form>
 		</div>
@@ -49,23 +55,26 @@
 	<%@ include file="./header.jsp"%>
 		<div>
 			<div style="text-align: right; color: blue;">
-				<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-					업로드
-				</button>
+				
 			</div>
 			<table class="table">
-			
+				
 				<tr>
 				<%
 					int v = 0;
 				%>
 				<c:forEach items="${photoList}" var="p">
 					<td>
+					<input type="hidden" id="photoNo" name="photoNo" value="${p.photoNo}">
 						<div>
-							<img src="/images/${p.getPhotoFile().getPhotoFileName() }.${p.getPhotoFile().getPhotoFileType() }" width="400" height="350">
+							<a href="${pageContext.request.contextPath}/photoOne?photoNo=${p.photoNo}">
+								<img src="/images/${p.getPf().getPhotoFileName()}.${p.getPf().getPhotoFileType()}" width="400" height="350">
+							</a>
 						</div>
 						<div>
-							${p.getPhotoName() }
+							<a href="${pageContext.request.contextPath}/photoOne?photoNo=${p.photoNo}">
+								${p.getPhotoName() }
+							</a>
 						</div>
 					</td>
 				<%
@@ -80,7 +89,13 @@
 				</tr>
 			</table>
 		</div>
-		<br>
+		<span style="line-height: 50%;"></span>
+		<div  style="text-align: right; margin-right: 1%;">
+			<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addPhoto">
+				업로드
+			</button>
+		</div>
+		<span style="line-height: 50%;"></span>
 		<div class="text-center">
 			<c:if test="${startPage > 1}">
 				<a href="${pageContext.request.contextPath}/photoList?currentPage=${startPage-1}">
@@ -105,14 +120,16 @@
 		</div>
 	</div>
 <script>
-function confirm_event() {
-	if(confirm("업로드하시겠습니까?")){
-		alert("업로드 완료");
-		document.form.submit;
+function readURL(input) {
+	if(input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById('preview').src = e.target.result;
+		};
+		reader.readAsDataURL(input.files[0]);
 	} else {
-		alert("업로드 취소");
+		document.getElementById('preview').src = "";
 	}
-	
 }
 </script>
 </body>

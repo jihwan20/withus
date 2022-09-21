@@ -36,7 +36,8 @@ public class PhotoService {
 		beginRow = (currentPage-1)*ROW_PER_PAGE;
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("ROW_PER_PAGE", ROW_PER_PAGE);
-		List<Map<String, Object>> photoList = photoMapper.selectPhotoList(paramMap);
+		List<Photo> photoList = photoMapper.selectPhotoList(paramMap);
+		
 		System.out.println("[BJH] = " + photoList);
 		startPage = ((currentPage - 1) / displayPage) * displayPage + 1;
 		
@@ -65,9 +66,9 @@ public class PhotoService {
 		int photoNo = photo.getPhotoNo();
 		
 		// 이미지 추가
-		List<PhotoFile> pfList = null;
+		List<PhotoFile> photoFile = null;
 		if(photo.getPhotoFileUpload() != null) { 
-			pfList = new ArrayList<PhotoFile>();
+			photoFile = new ArrayList<PhotoFile>();
 			for(MultipartFile mf : photo.getPhotoFileUpload()) {
 				PhotoFile pf = new PhotoFile();
 				pf.setPhotoNo(photoNo);
@@ -82,7 +83,7 @@ public class PhotoService {
 				pf.setPhotoFileName(imageName);
 				pf.setPhotoFileType(imageType);
 				pf.setPhotoFileSize(mf.getSize());
-				pfList.add(pf);
+				photoFile.add(pf);
 				try {
 					mf.transferTo(new File(path+"images\\"+imageName+"."+imageType));
 				} catch (Exception e) {
@@ -92,12 +93,17 @@ public class PhotoService {
 				}
 			}
 		}
-		if(pfList != null) {
-			for(PhotoFile pf : pfList) {
+		if(photoFile != null) {
+			for(PhotoFile pf : photoFile) {
 				photoMapper.insertPhotoFile(pf);
 			}
 		}
 		
 	}
-	
+	// 앨범 상세보기
+	public List<Photo> getPhotoOne(int photoNo) {
+		List<Photo> photo = photoMapper.selectPhotoOne(photoNo);
+		System.out.println("[BJH] : " + photo);
+		return photo;
+	}
 }

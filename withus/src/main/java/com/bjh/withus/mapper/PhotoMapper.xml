@@ -7,7 +7,7 @@
 	<result column="photo_name" property="photoName"/>
 	<result column="create_date" property="createDate"/>
 	<result column="update_date" property="updateDate"/>
-	<association property="photoFile" javaType="com.bjh.withus.vo.PhotoFile">
+	<association property="pf" javaType="com.bjh.withus.vo.PhotoFile">
 		<id column="photofile_no" property="photoFileNo"/>
 		<result column="photofile_name" property="photoFileName"/>
 		<result column="photofile_type" property="photoFileType"/>
@@ -65,4 +65,14 @@
 		#{photoFileSize}
 	)
 </insert>
+<!-- 이미지 상세보기 -->
+<select id="selectPhotoOne" parameterType="int" resultMap="photoMap">
+	SELECT 
+		p.*,
+		pf.*
+	 FROM 
+	 	photo AS p INNER JOIN photofile AS pf
+	 ON p.photo_no = pf.photo_no
+	 WHERE p.photo_no = #{photoNo}
+</select>
 </mapper>

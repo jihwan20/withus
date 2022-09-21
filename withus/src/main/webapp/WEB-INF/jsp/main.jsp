@@ -11,7 +11,7 @@
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 </head>
 <body>
-	<form class="container-fluid">
+	<form class=".container-fluid">
 		<%@ include file="./header.jsp"%>
 		<div class="slider" style="text-align: center;">
 			<div>
