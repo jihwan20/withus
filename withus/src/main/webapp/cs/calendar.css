@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+/*캘린더 사이즈*/
+.calendar {
+	width: 70%;
+	margin: auto;
+}
+
+/* 년/월 */
+.navigation {
+	margin-top: 30px;
+	margin-bottom: 5px;
+	text-align: center;
+	font-size: 25px;
+	vertical-align: middle;
+}
+
+/*캘린더 꾸미기*/
+.calendar_body {
+	width: 100%;
+	background-color: #FFFFFF;
+	border: 1px solid #A0D9E2;
+	margin-bottom: 50px;
+	border-collapse: collapse;
+}
+
+/*캘린더 꾸미기*/
+.calendar_body .today {
+	border: 1px solid #A0D9E2;
+	height: 110px;
+	background-color: #EFEFEF;
+	text-align: left;
+	vertical-align: top;
+}
+
+.calendar_body .date{
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+.date {
+	margin-bottom: 10px;
+}
+
+.sat {
+	margin-bottom: 10px;
+}
+
+.sun {
+	margin-bottom: 10px;
+}
+/*캘린더 꾸미기*/
+.calendar_body .sat_day {
+	border: 1px solid #A0D9E2;
+	height: 110px;
+	background-color: white;
+	text-align: left;
+	vertical-align: top;
+}
+
+.calendar_body .sat_day .sat {
+	color: #0030DB;
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+/*캘린더 꾸미기*/
+.calendar_body .sun_day {
+	border: 1px solid #A0D9E2;
+	height: 110px;
+	background-color: white;
+	text-align: left;
+	vertical-align: top;
+}
+
+.calendar_body .sun_day .sun {
+	color: #ED0000;
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+/* 캘린더 꾸미기 */
+.calendar_body .normal_day{
+	border: 1px solid #A0D9E2;
+	height: 110px;
+	background-color: white;
+	vertical-align: top;
+	text-align: left;
+}
+
+.before_after_month {
+	margin: 10px;
+	font-weight: bold;
+}
+
+.before_after_year {
+	font-weight: bold;
+}
+
+.this_month {
+	margin: 10px;
+}
+
+.schedule_add_button {
+	float: right;
+}
