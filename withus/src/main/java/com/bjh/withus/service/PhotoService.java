@@ -106,4 +106,51 @@ public class PhotoService {
 		System.out.println("[BJH] : " + photo);
 		return photo;
 	}
+	
+	// 앨범 수정
+	public void updatePhoto(Photo photo, PhotoFile photoFile, String path) {
+		photoMapper.updatePhoto(photo);
+		int photoNo = photo.getPhotoNo();
+		// 이미지 수정
+		List<PhotoFile> pfList = null;
+		if(photo.getPhotoFileUpload() != null) {
+			pfList = new ArrayList<PhotoFile>();
+			for(MultipartFile mf : photo.getPhotoFileUpload()) {
+				photoFile.setPhotoNo(photoNo);
+				String originName = mf.getOriginalFilename();
+				int p = originName.lastIndexOf(".");
+				String imageName = UUID.randomUUID().toString();
+				String imageType = originName.substring(p+1);
+				// if문을 이용해 파일추가 안할시 DB에 NULL값이 저장되는 걸 방지
+				if(imageType.equals("")) {
+					break;
+				}
+				photoFile.setPhotoFileName(imageName);
+				photoFile.setPhotoFileType(imageType);
+				photoFile.setPhotoFileSize(mf.getSize());
+				pfList.add(photoFile);
+				try {
+					mf.transferTo(new File(path+"images\\"+imageName+"."+imageType));
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					throw new RuntimeException();
+				}
+			}
+		}
+		if(pfList != null) {
+			for(PhotoFile pf : pfList) {
+				photoMapper.updatePhotoFile(pf);
+			}
+		}
+	}
+	// 앨범 삭제
+	public void deletePhoto(Photo photo, PhotoFile photofile) {
+		if(photofile != null && photo != null) {
+			photoMapper.deletePhotoFile(photofile);
+		}
+		if(photofile == null && photo != null) {
+			photoMapper.deletePhoto(photo);
+		}
+	}
 }

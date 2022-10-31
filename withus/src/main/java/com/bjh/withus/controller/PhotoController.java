@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bjh.withus.service.PhotoService;
 import com.bjh.withus.vo.Photo;
+import com.bjh.withus.vo.PhotoFile;
 
 @Controller
 public class PhotoController {
@@ -56,5 +57,21 @@ public class PhotoController {
 		System.out.println("[BJH(photo)] : " + photo);
 		
 		return "photoOne";
+	}
+	
+	// 앨범 수정
+	@PostMapping("/updatePhoto")
+	public String updatePhoto(HttpServletRequest request, HttpSession session, Photo photo, PhotoFile photoFile) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		photoService.updatePhoto(photo, photoFile, path);
+		return "redirect:/photoOne?photoNo="+photo.getPhotoNo();
+	}
+	
+	// 앨범 삭제
+	@PostMapping("/deletePhoto")
+	public String deletePhoto(Photo photo, PhotoFile photoFile) {
+		photoService.deletePhoto(photo, photoFile);
+		System.out.println("[BJH(deletePhoto)] : " + photo);
+		return "redirect:/photoList";
 	}
 }

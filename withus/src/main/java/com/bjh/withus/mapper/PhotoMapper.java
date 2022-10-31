@@ -24,4 +24,12 @@ public interface PhotoMapper {
 	
 	// 앨범 상세보기
 	List<Photo> selectPhotoOne(int photoNo);
+	
+	// 앨범 수정
+	void updatePhoto(Photo photo);
+	void updatePhotoFile(PhotoFile photoFile);
+	
+	// 앨범 삭제
+	void deletePhoto(Photo photo);
+	void deletePhotoFile(PhotoFile photoFile);
 }

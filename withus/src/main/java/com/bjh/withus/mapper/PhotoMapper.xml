@@ -51,6 +51,7 @@
 		NOW()
 	)
 </insert>
+
 <!-- 사진이미지 업로드 -->
 <insert id="insertPhotoFile">
 	INSERT INTO photofile(
@@ -65,6 +66,7 @@
 		#{photoFileSize}
 	)
 </insert>
+
 <!-- 이미지 상세보기 -->
 <select id="selectPhotoOne" parameterType="int" resultMap="photoMap">
 	SELECT 
@@ -75,4 +77,28 @@
 	 ON p.photo_no = pf.photo_no
 	 WHERE p.photo_no = #{photoNo}
 </select>
+
+<!-- 앨범 수정 -->
+<update id="updatePhoto" parameterType="com.bjh.withus.vo.Photo">
+	UPDATE photo SET
+			photo_name = #{photoName},
+			update_date = NOW()
+	WHERE photo_no = #{photoNo}
+</update>
+<!-- 이미지 수정  -->
+<update id="updatePhotoFile" parameterType="com.bjh.withus.vo.PhotoFile">
+	UPDATE photoFile SET
+			photofile_name = #{photoFileName},
+			photofile_type = #{photoFileType},
+			photofile_size = #{photoFileSize}
+	WHERE photo_no = #{photoNo}
+</update>
+<delete id="deletePhoto" parameterType="com.bjh.withus.vo.Photo">
+	DELETE FROM photo
+	WHERE photo_no = #{photoNo}
+</delete>
+<delete id="deletePhotoFile" parameterType="com.bjh.withus.vo.PhotoFile">
+	DELETE FROM photofile
+	WHERE photo_no = #{photoNo}
+</delete>
 </mapper>
